@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello
+    tier: backend
+  name: hello
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: backend
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: backend
+    spec:
+      containers:
+      - image: cory16/hello:1.0
+        name: hello
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+         httpGet:
+           path: /actuator/health/liveness
+           port: 8080
+         initialDelaySeconds: 30
+         timeoutSeconds: 5
+         periodSeconds: 5
+         failureThreshold: 3
+        readinessProbe:
+         httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+         initialDelaySeconds: 30
+         timeoutSeconds: 10
+         periodSeconds: 5
+         failureThreshold: 3
