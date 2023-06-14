@@ -39,3 +39,4 @@ kubectl apply -f deployment_version2.yaml
 Rollback application to previous version:
 
 kubectl rollout undo deployment/hello
+test
